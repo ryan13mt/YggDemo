@@ -2,16 +2,14 @@ package com.ygg.game.service;
 
 import java.util.*;
 
-public class RoundService {
+public class RoundServiceTask1 {
 
     public String[] mainRound = {"100", "20", "20", "5", "5", "5", "5", "5", "extraLife", "gameOver", "gameOver", "gameOver"};
     public String[] bonusRound = {"secondChance", "20", "10", "5"};
     public String[] secondBonusRound = {"20", "10", "5"};
 
     public int gameLogic(final List<String> mainRound, final String firstBonusRound, final List<String> secondMainRound, final String secondBonusRound) {
-        int reward = 0;
-
-        reward += calculateMainRoundReward(mainRound);
+        int reward = calculateMainRoundReward(mainRound);
 
         if (firstBonusRound.equals("secondChance")) {
             reward += calculateMainRoundReward(secondMainRound);

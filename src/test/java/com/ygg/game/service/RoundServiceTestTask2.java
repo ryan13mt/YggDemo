@@ -36,8 +36,7 @@ public class RoundServiceTestTask2 {
         Generator.permutation("100", "20", "20", "5", "5", "5", "5", "5", "extraLife", "gameOver", "gameOver", "gameOver")
                 .simple()
                 .stream()
-                .forEach(entry -> allPossibleCombinations.add(sut.gameLogic(entry)));
-
+                .forEach(entry -> allPossibleCombinations.add(sut.calculateMainRoundReward(entry)));
 
         //removing duplicate partial combinations
         List<DataModel> allPossibleUniqueCombinations = io.vavr.collection.List.ofAll(allPossibleCombinations).distinctBy(DataModel::getChoiceCombination).toJavaList();
@@ -48,18 +47,18 @@ public class RoundServiceTestTask2 {
         for (Map.Entry<Integer, Double> entry : map.entrySet()) {
             expectedValueOfMainRound = expectedValueOfMainRound + entry.getKey()*entry.getValue();
         }
-        System.out.println(expectedValueOfMainRound);
+        System.out.println("Expected value of main round is " + expectedValueOfMainRound);
 
         //expected value of bonus round without second chance
         double expectedValueOfBonusRound = (5.0/3)+(10.0/3)+(20.0/3);
-        System.out.println(expectedValueOfBonusRound);
+        System.out.println("Expected value of bonus round without second chance is " + expectedValueOfBonusRound);
 
         double expectedValueOfSecondChance = expectedValueOfMainRound + expectedValueOfBonusRound;
-        System.out.println(expectedValueOfSecondChance);
+        System.out.println("Expected value of second chance (main round + bonus round without second chance) is " + expectedValueOfSecondChance);
 
         //expected value of bonus round with second chance
         double expectedValueOfBonusRoundWithSecondChance = (5.0/4)+(10.0/4)+(20.0/4)+(expectedValueOfSecondChance/4);
-        System.out.println(expectedValueOfBonusRoundWithSecondChance);
+        System.out.println("Expected value of bonus round with second chance is " + expectedValueOfBonusRoundWithSecondChance);
 
         System.out.println("Expected value of whole game is " + formatter.format(expectedValueOfMainRound+expectedValueOfBonusRoundWithSecondChance));
 

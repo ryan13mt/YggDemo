@@ -11,8 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class DataModel {
 
-    List<String> choiceCombination;
-    int reward;
-    double probability;
+    private List<String> choiceCombination;
+    private int reward;
+    private double probability;
 
 }

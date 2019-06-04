@@ -4,21 +4,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.paukov.combinatorics3.Generator;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RoundServiceTest {
+public class RoundServiceTestTask1 {
 
     @InjectMocks
-    private RoundService sut;
+    private RoundServiceTask1 sut;
 
     public List<String> mainRoundRandomize() {
         List<String> stringList = Arrays.asList(sut.mainRound.clone());
@@ -38,8 +33,8 @@ public class RoundServiceTest {
     //Task 1
     @Test
     public void getFullGamePlaythroughExpectedValue() {
-        NumberFormat formatter = new DecimalFormat("#0.0");
-        ArrayList<Integer> rewards = new ArrayList();
+        final NumberFormat formatter = new DecimalFormat("#0.0");
+        List<Integer> rewards = new ArrayList();
         for (int i = 0; i < 10000000; i++) {
             rewards.add(sut.gameLogic(mainRoundRandomize(), randomPickBonusRound(true), mainRoundRandomize(), randomPickBonusRound(false)));
         }
