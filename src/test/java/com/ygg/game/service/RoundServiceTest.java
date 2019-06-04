@@ -35,32 +35,6 @@ public class RoundServiceTest {
         }
     }
 
-    @Test
-    public void getFullGamePlaythrough() throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter writer = new PrintWriter("10Million.txt", "UTF-8");
-        ArrayList<Integer> rewards = new ArrayList();
-        for (int i = 0; i < 10000000; i++) {
-
-            final List<String> firstMainRound = mainRoundRandomize();
-            final String firstBonusPick = randomPickBonusRound(true);
-            final List<String> secondMainRound = mainRoundRandomize();
-            final String secondBonusPick = randomPickBonusRound(false);
-
-            List<String> randomizedFullGame = new ArrayList<>(firstMainRound);
-            randomizedFullGame.add(firstBonusPick);
-            randomizedFullGame.addAll(secondMainRound);
-            randomizedFullGame.add(secondBonusPick);
-
-            int reward = sut.gameLogic(firstMainRound, firstBonusPick, secondMainRound, secondBonusPick);
-            rewards.add(reward);
-
-            writer.println(/*randomizedFullGame + " And winning " + */reward);
-        }
-        writer.close();
-        List<Integer> collect = rewards.stream().distinct().collect(Collectors.toList());
-        System.out.println(collect);
-    }
-
     //Task 1
     @Test
     public void getFullGamePlaythroughExpectedValue() {

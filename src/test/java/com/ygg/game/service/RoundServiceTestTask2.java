@@ -29,16 +29,14 @@ public class RoundServiceTestTask2 {
     public void getAllPossibleCombinations() {
 
         List<DataModel> allPossibleCombinations = new ArrayList<>();
-        NumberFormat formatter = new DecimalFormat("#0.00");
+        NumberFormat formatter = new DecimalFormat("#0.0");
         double expectedValueOfMainRound = 0.0;
 
         //get all possible combinations
         Generator.permutation("100", "20", "20", "5", "5", "5", "5", "5", "extraLife", "gameOver", "gameOver", "gameOver")
                 .simple()
                 .stream()
-                .forEach(entry -> {
-                    allPossibleCombinations.add(sut.gameLogic(entry));
-                });
+                .forEach(entry -> allPossibleCombinations.add(sut.gameLogic(entry)));
 
 
         //removing duplicate partial combinations
@@ -51,6 +49,20 @@ public class RoundServiceTestTask2 {
             expectedValueOfMainRound = expectedValueOfMainRound + entry.getKey()*entry.getValue();
         }
         System.out.println(expectedValueOfMainRound);
+
+        //expected value of bonus round without second chance
+        double expectedValueOfBonusRound = (5.0/3)+(10.0/3)+(20.0/3);
+        System.out.println(expectedValueOfBonusRound);
+
+        double expectedValueOfSecondChance = expectedValueOfMainRound + expectedValueOfBonusRound;
+        System.out.println(expectedValueOfSecondChance);
+
+        //expected value of bonus round with second chance
+        double expectedValueOfBonusRoundWithSecondChance = (5.0/4)+(10.0/4)+(20.0/4)+(expectedValueOfSecondChance/4);
+        System.out.println(expectedValueOfBonusRoundWithSecondChance);
+
+        System.out.println("Expected value of whole game is " + formatter.format(expectedValueOfMainRound+expectedValueOfBonusRoundWithSecondChance));
+
     }
 
 }
