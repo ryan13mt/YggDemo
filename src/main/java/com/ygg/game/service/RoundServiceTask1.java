@@ -5,9 +5,7 @@ import com.ygg.game.models.MainRoundEnum;
 
 import java.util.List;
 
-import static com.ygg.game.models.MainRoundEnum.FIVE;
-import static com.ygg.game.models.MainRoundEnum.ONEHUNDRED;
-import static com.ygg.game.models.MainRoundEnum.TWENTY;
+import static com.ygg.game.models.MainRoundEnum.*;
 
 public class RoundServiceTask1 {
 
@@ -28,7 +26,7 @@ public class RoundServiceTask1 {
         int reward = 0;
         boolean extraLife = false;
 
-        for (MainRoundEnum pick : mainRound) {
+        for (final MainRoundEnum pick : mainRound) {
             switch (pick) {
                 case ONEHUNDRED:
                     reward += ONEHUNDRED.getValue();
