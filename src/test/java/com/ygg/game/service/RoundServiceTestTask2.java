@@ -47,21 +47,21 @@ public class RoundServiceTestTask2 {
         final Map<Integer, Double> map = allPossibleUniqueCombinations.stream().collect(groupingBy(DataModel::getReward, summingDouble(DataModel::getProbability)));
 
         //expected value of main round
-        for (Map.Entry<Integer, Double> entry : map.entrySet()) {
+        for (final Map.Entry<Integer, Double> entry : map.entrySet()) {
             expectedValueOfMainRound = expectedValueOfMainRound + entry.getKey() * entry.getValue();
         }
         System.out.println("Expected value of main round is " + expectedValueOfMainRound);
 
         //expected value of bonus round without second chance
-        double expectedValueOfBonusRound = (5.0 / 3) + (10.0 / 3) + (20.0 / 3);
+        final double expectedValueOfBonusRound = (5.0 / 3) + (10.0 / 3) + (20.0 / 3);
         System.out.println("Expected value of bonus round without second chance is " + expectedValueOfBonusRound);
 
         //expected value of second chance (main round + bonus round without second chance)
-        double expectedValueOfSecondChance = expectedValueOfMainRound + expectedValueOfBonusRound;
+        final double expectedValueOfSecondChance = expectedValueOfMainRound + expectedValueOfBonusRound;
         System.out.println("Expected value of second chance (main round + bonus round without second chance) is " + expectedValueOfSecondChance);
 
         //expected value of bonus round with second chance
-        double expectedValueOfBonusRoundWithSecondChance = (5.0 / 4) + (10.0 / 4) + (20.0 / 4) + (expectedValueOfSecondChance / 4);
+        final double expectedValueOfBonusRoundWithSecondChance = (5.0 / 4) + (10.0 / 4) + (20.0 / 4) + (expectedValueOfSecondChance / 4);
         System.out.println("Expected value of bonus round with second chance is " + expectedValueOfBonusRoundWithSecondChance);
 
         //expected value of whole game
