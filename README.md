@@ -1,7 +1,7 @@
 # YggDemo
 
 
-##Task 1
+## Task 1
 
 Please run RoundServiceTestTask1.getFullGamePlaythroughExpectedValue(). This test will create a list ten million randomized choices for a full game.
 Each entry will have these:
@@ -33,7 +33,7 @@ The expected value is around the 73.528 region which comes to 73.5.
 
 
 
-##Task 2
+## Task 2
 
 Please run RoundServiceTestTask2.calculateExpectedValue(). This test will calculate the expected value of the game.
 
