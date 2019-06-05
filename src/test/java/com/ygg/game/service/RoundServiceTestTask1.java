@@ -1,5 +1,8 @@
 package com.ygg.game.service;
 
+import com.ygg.game.models.BonusRoundEnum;
+import com.ygg.game.models.MainRoundEnum;
+import com.ygg.game.models.Round;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,19 +17,23 @@ public class RoundServiceTestTask1 {
 
     @InjectMocks
     private RoundServiceTask1 sut;
+    @InjectMocks
+    private Round round;
 
-    public List<String> mainRoundRandomize() {
-        List<String> stringList = Arrays.asList(sut.mainRound.clone());
+    private static final int TENMILLION = 10000000;
+
+    public List<MainRoundEnum> mainRoundRandomize() {
+        List<MainRoundEnum> stringList = Arrays.asList(round.mainRound.clone());
         Collections.shuffle(stringList);
         return stringList;
     }
 
-    public String randomPickBonusRound(final boolean firstTime) {
+    public BonusRoundEnum randomPickBonusRound(final boolean firstTime) {
         final Random random = new Random();
         if (firstTime) {
-            return sut.bonusRound[random.nextInt(sut.bonusRound.length)];
+            return round.bonusRound[random.nextInt(round.bonusRound.length)];
         } else {
-            return sut.secondBonusRound[random.nextInt(sut.secondBonusRound.length)];
+            return round.secondBonusRound[random.nextInt(round.secondBonusRound.length)];
         }
     }
 
@@ -35,7 +42,7 @@ public class RoundServiceTestTask1 {
     public void getFullGamePlaythroughExpectedValue() {
         final NumberFormat formatter = new DecimalFormat("#0.0");
         List<Integer> rewards = new ArrayList();
-        for (int i = 0; i < 10000000; i++) {
+        for (int i = 0; i < TENMILLION; i++) {
             rewards.add(sut.gameLogic(mainRoundRandomize(), randomPickBonusRound(true), mainRoundRandomize(), randomPickBonusRound(false)));
         }
         final OptionalDouble average = rewards.stream().mapToDouble(a -> a).average();

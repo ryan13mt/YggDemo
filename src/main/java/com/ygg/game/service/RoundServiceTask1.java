@@ -1,45 +1,48 @@
 package com.ygg.game.service;
 
-import java.util.*;
+import com.ygg.game.models.BonusRoundEnum;
+import com.ygg.game.models.MainRoundEnum;
+
+import java.util.List;
+
+import static com.ygg.game.models.MainRoundEnum.FIVE;
+import static com.ygg.game.models.MainRoundEnum.ONEHUNDRED;
+import static com.ygg.game.models.MainRoundEnum.TWENTY;
 
 public class RoundServiceTask1 {
 
-    public String[] mainRound = {"100", "20", "20", "5", "5", "5", "5", "5", "extraLife", "gameOver", "gameOver", "gameOver"};
-    public String[] bonusRound = {"secondChance", "20", "10", "5"};
-    public String[] secondBonusRound = {"20", "10", "5"};
-
-    public int gameLogic(final List<String> mainRound, final String firstBonusRound, final List<String> secondMainRound, final String secondBonusRound) {
+    public int gameLogic(final List<MainRoundEnum> mainRound, final BonusRoundEnum firstBonusRound, final List<MainRoundEnum> secondMainRound, final BonusRoundEnum secondBonusRound) {
         int reward = calculateMainRoundReward(mainRound);
 
-        if (firstBonusRound.equals("secondChance")) {
+        if (firstBonusRound.equals(BonusRoundEnum.SECONDCHANCE)) {
             reward += calculateMainRoundReward(secondMainRound);
-            reward += Integer.valueOf(secondBonusRound);
+            reward += secondBonusRound.getValue();
         } else {
-            reward += Integer.valueOf(firstBonusRound);
+            reward += firstBonusRound.getValue();
         }
 
         return reward;
     }
 
-    public int calculateMainRoundReward(List<String> mainRound) {
+    private int calculateMainRoundReward(final List<MainRoundEnum> mainRound) {
         int reward = 0;
         boolean extraLife = false;
 
-        for (String pick : mainRound) {
+        for (MainRoundEnum pick : mainRound) {
             switch (pick) {
-                case "100":
-                    reward += 100;
+                case ONEHUNDRED:
+                    reward += ONEHUNDRED.getValue();
                     break;
-                case "20":
-                    reward += 20;
+                case TWENTY:
+                    reward += TWENTY.getValue();
                     break;
-                case "5":
-                    reward += 5;
+                case FIVE:
+                    reward += FIVE.getValue();
                     break;
-                case "extraLife":
+                case EXTRALIFE:
                     extraLife = true;
                     break;
-                case "gameOver":
+                case GAMEOVER:
                     if (extraLife) {
                         extraLife = false;
                         break;

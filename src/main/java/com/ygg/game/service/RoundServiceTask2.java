@@ -1,52 +1,55 @@
 package com.ygg.game.service;
 
-import com.ygg.game.DataModel;
+import com.ygg.game.models.DataModel;
+import com.ygg.game.models.MainRoundEnum;
 
 import java.util.List;
 
+import static com.ygg.game.models.MainRoundEnum.*;
+
 public class RoundServiceTask2 {
 
-    public DataModel calculateMainRoundReward(final List<String> choices) {
+    public DataModel calculateMainRoundReward(final List<MainRoundEnum> choices) {
         int reward = 0;
         boolean extraLife = false;
         double probability = 1.0;
-        double numberof100Left = 1.0;
-        double numberof20Left = 2.0;
-        double numberof5Left = 5.0;
-        double numberofExtraLifeLeft = 1.0;
-        double numberofGameOverLeft = 3.0;
+        double numberOf100Left = 1.0;
+        double numberOf20Left = 2.0;
+        double numberOf5Left = 5.0;
+        double numberOfExtraLifeLeft = 1.0;
+        double numberOfGameOverLeft = 3.0;
 
         for (int i = 0; i < choices.size(); i++) {
             switch (choices.get(i)) {
-                case "100":
-                    reward += 100;
-                    probability = probability*(numberof100Left/(12-i));
-                    numberof100Left -= 1;
+                case ONEHUNDRED:
+                    reward += ONEHUNDRED.getValue();
+                    probability = probability * (numberOf100Left / (choices.size() - i));
+                    numberOf100Left -= 1;
                     break;
-                case "20":
-                    reward += 20;
-                    probability = probability*(numberof20Left/(12-i));
-                    numberof20Left -= 1;
+                case TWENTY:
+                    reward += TWENTY.getValue();
+                    probability = probability * (numberOf20Left / (choices.size() - i));
+                    numberOf20Left -= 1;
                     break;
-                case "5":
-                    reward += 5;
-                    probability = probability*(numberof5Left/(12-i));
-                    numberof5Left -= 1;
+                case FIVE:
+                    reward += FIVE.getValue();
+                    probability = probability * (numberOf5Left / (choices.size() - i));
+                    numberOf5Left -= 1;
                     break;
-                case "extraLife":
+                case EXTRALIFE:
                     extraLife = true;
-                    probability = probability*(numberofExtraLifeLeft/(12-i));
-                    numberofExtraLifeLeft -= 1;
+                    probability = probability * (numberOfExtraLifeLeft / (choices.size() - i));
+                    numberOfExtraLifeLeft -= 1;
                     break;
-                case "gameOver":
+                case GAMEOVER:
                     if (extraLife) {
                         extraLife = false;
-                        probability = probability*(numberofGameOverLeft/(12-i));
-                        numberofGameOverLeft -= 1;
+                        probability = probability * (numberOfGameOverLeft / (choices.size() - i));
+                        numberOfGameOverLeft -= 1;
                         break;
                     } else {
-                        probability = probability*(numberofGameOverLeft/(12-i));
-                        return new DataModel(choices.subList(0, i+1), reward, probability);
+                        probability = probability * (numberOfGameOverLeft / (choices.size() - i));
+                        return new DataModel(choices.subList(0, i + 1), reward, probability);
                     }
                 default:
                     throw new IllegalStateException("Not possible!!!");

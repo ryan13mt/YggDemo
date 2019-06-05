@@ -1,6 +1,7 @@
 package com.ygg.game.service;
 
-import com.ygg.game.DataModel;
+import com.ygg.game.models.DataModel;
+import com.ygg.game.models.Round;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.summingDouble;
 
@@ -23,44 +23,49 @@ public class RoundServiceTestTask2 {
     @InjectMocks
     private RoundServiceTask2 sut;
 
+    @InjectMocks
+    private Round round;
 
     //Task 2
     @Test
-    public void getAllPossibleCombinations() {
+    public void calculateExpectedValue() {
 
         List<DataModel> allPossibleCombinations = new ArrayList<>();
-        NumberFormat formatter = new DecimalFormat("#0.0");
+        final NumberFormat formatter = new DecimalFormat("#0.0");
         double expectedValueOfMainRound = 0.0;
 
-        //get all possible combinations
-        Generator.permutation("100", "20", "20", "5", "5", "5", "5", "5", "extraLife", "gameOver", "gameOver", "gameOver")
+        //get all possible combinations of the main round and run them through the game logic to get probability and choices till game over
+        Generator.permutation(round.mainRound)
                 .simple()
                 .stream()
                 .forEach(entry -> allPossibleCombinations.add(sut.calculateMainRoundReward(entry)));
 
-        //removing duplicate partial combinations
-        List<DataModel> allPossibleUniqueCombinations = io.vavr.collection.List.ofAll(allPossibleCombinations).distinctBy(DataModel::getChoiceCombination).toJavaList();
+        //removing duplicate combinations returned by game logic
+        final List<DataModel> allPossibleUniqueCombinations = io.vavr.collection.List.ofAll(allPossibleCombinations).distinctBy(DataModel::getChoiceCombination).toJavaList();
 
         //collecting combinations and summing the probability of those with the same reward
-        Map<Integer, Double> map = allPossibleUniqueCombinations.stream().collect(groupingBy(DataModel::getReward, summingDouble(DataModel::getProbability)));
+        final Map<Integer, Double> map = allPossibleUniqueCombinations.stream().collect(groupingBy(DataModel::getReward, summingDouble(DataModel::getProbability)));
 
+        //expected value of main round
         for (Map.Entry<Integer, Double> entry : map.entrySet()) {
-            expectedValueOfMainRound = expectedValueOfMainRound + entry.getKey()*entry.getValue();
+            expectedValueOfMainRound = expectedValueOfMainRound + entry.getKey() * entry.getValue();
         }
         System.out.println("Expected value of main round is " + expectedValueOfMainRound);
 
         //expected value of bonus round without second chance
-        double expectedValueOfBonusRound = (5.0/3)+(10.0/3)+(20.0/3);
+        double expectedValueOfBonusRound = (5.0 / 3) + (10.0 / 3) + (20.0 / 3);
         System.out.println("Expected value of bonus round without second chance is " + expectedValueOfBonusRound);
 
+        //expected value of second chance (main round + bonus round without second chance)
         double expectedValueOfSecondChance = expectedValueOfMainRound + expectedValueOfBonusRound;
         System.out.println("Expected value of second chance (main round + bonus round without second chance) is " + expectedValueOfSecondChance);
 
         //expected value of bonus round with second chance
-        double expectedValueOfBonusRoundWithSecondChance = (5.0/4)+(10.0/4)+(20.0/4)+(expectedValueOfSecondChance/4);
+        double expectedValueOfBonusRoundWithSecondChance = (5.0 / 4) + (10.0 / 4) + (20.0 / 4) + (expectedValueOfSecondChance / 4);
         System.out.println("Expected value of bonus round with second chance is " + expectedValueOfBonusRoundWithSecondChance);
 
-        System.out.println("Expected value of whole game is " + formatter.format(expectedValueOfMainRound+expectedValueOfBonusRoundWithSecondChance));
+        //expected value of whole game
+        System.out.println("Expected value of whole game is " + formatter.format(expectedValueOfMainRound + expectedValueOfBonusRoundWithSecondChance));
 
     }
 

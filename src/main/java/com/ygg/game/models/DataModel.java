@@ -1,4 +1,4 @@
-package com.ygg.game;
+package com.ygg.game.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class DataModel {
 
-    private List<String> choiceCombination;
+    private List<MainRoundEnum> choiceCombination;
     private int reward;
     private double probability;
 
